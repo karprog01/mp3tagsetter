@@ -3,3 +3,4 @@
 /.vscode
 /__main__.spec
 /.idea
+__pycache__
