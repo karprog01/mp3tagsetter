@@ -1,5 +1,7 @@
 import argparse
 import eyed3
+import os
+import urllib.request
 from colors import bcolors
 
 def main():
@@ -10,10 +12,9 @@ def main():
         help='MP3 file name'
     )
     parser.add_argument(
-        '--cover',
+        'cover',
         type=str,
-        default='cover.jpg',
-        help='Cover image file name'
+        help='Cover image url'
     )
     args = parser.parse_args()
 
@@ -27,8 +28,9 @@ def main():
         exit()
 
     try:
-        cover = open(args.cover, 'rb').read()
-    except FileNotFoundError:
+        urllib.request.urlretrieve(args.cover, 'cover.jpg')
+        cover = open('cover.jpg', 'rb').read()
+    except ValueError:
         print(bcolors.FAIL + 'ERROR:' + bcolors.ENDC + ' Cover ' + args.cover + ' not found')
         exit()
 
@@ -38,6 +40,8 @@ def main():
     audio.tag.artist = artist_name
     audio.tag.title = title
     audio.tag.images.set(3, cover, 'image/jpeg')
+
+    os.remove("cover.jpg")
 
     audio.tag.save()
 
