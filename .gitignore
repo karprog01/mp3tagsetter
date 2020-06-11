@@ -1,0 +1,5 @@
+/build
+/dist
+/.vscode
+/__main__.spec
+/.idea
